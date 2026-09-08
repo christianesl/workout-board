@@ -503,10 +503,25 @@
       try {
         const res = await fetch(url);
         if (!res.ok) throw new Error("Could not load the HTML preview.");
-        els.htmlPreview.srcdoc = await res.text();
+        els.htmlPreview.srcdoc = makeResponsiveHtml(await res.text());
       } catch (err) {
         els.htmlPreview.srcdoc = `<p style="font-family: sans-serif; padding: 1rem; color: #333">${err.message}</p>`;
       }
+    }
+
+    function makeResponsiveHtml(html) {
+      const viewport = '<meta name="viewport" content="width=device-width, initial-scale=1">';
+      const responsiveStyle = `<style id="workout-board-responsive">
+        *, *::before, *::after { box-sizing: border-box; }
+        html, body { width: 100%; max-width: 100%; min-width: 0; }
+        body { margin: 0; overflow-x: auto; }
+        img, video, canvas, svg, iframe { max-width: 100%; }
+        table { max-width: 100%; }
+      </style>`;
+      if (/<head(?:\s[^>]*)?>/i.test(html)) {
+        return html.replace(/<head(?:\s[^>]*)?>/i, (head) => `${head}${viewport}${responsiveStyle}`);
+      }
+      return `<!doctype html><html><head>${viewport}${responsiveStyle}</head><body>${html}</body></html>`;
     }
 
     function showEmpty() {
