@@ -1,8 +1,8 @@
 {
-  "empty": true,
-  "path": null,
-  "name": null,
-  "mime": null,
-  "bytes": 0,
-  "updatedAt": null
+  "empty": false,
+  "path": "media/current.jpg",
+  "name": "sepphirot-2560x1600.jpg",
+  "mime": "image/jpeg",
+  "bytes": 204448,
+  "updatedAt": "2026-09-08T17:36:34.739Z"
 }
