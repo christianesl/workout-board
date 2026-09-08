@@ -1,8 +1,8 @@
 {
-  "empty": true,
-  "path": null,
-  "name": null,
-  "mime": null,
-  "bytes": 0,
-  "updatedAt": "2026-09-08T17:47:10.781Z"
+  "empty": false,
+  "path": "media/current.png",
+  "name": "image.png",
+  "mime": "image/png",
+  "bytes": 1479643,
+  "updatedAt": "2026-09-08T17:47:14.535Z"
 }
