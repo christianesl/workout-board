@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -485,7 +485,7 @@
       els.image.classList.toggle("hidden", isHtml);
       els.htmlPreview.classList.toggle("hidden", !isHtml);
       if (isHtml) {
-        els.htmlPreview.src = url;
+        loadHtmlPreview(url);
       } else {
         els.image.src = url;
       }
@@ -499,11 +499,22 @@
       els.sub.textContent = formatMeta(meta, when);
     }
 
+    async function loadHtmlPreview(url) {
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error("Could not load the HTML preview.");
+        els.htmlPreview.srcdoc = await res.text();
+      } catch (err) {
+        els.htmlPreview.srcdoc = `<p style="font-family: sans-serif; padding: 1rem; color: #333">${err.message}</p>`;
+      }
+    }
+
     function showEmpty() {
       if (state.localUrl) URL.revokeObjectURL(state.localUrl);
       state.localUrl = null;
       els.image.removeAttribute("src");
       els.htmlPreview.removeAttribute("src");
+      els.htmlPreview.srcdoc = "";
       els.image.classList.remove("hidden");
       els.htmlPreview.classList.add("hidden");
       els.empty.classList.remove("hidden");
