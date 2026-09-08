@@ -200,6 +200,13 @@
       object-fit: contain;
       border-radius: var(--radius-sm);
     }
+    .preview iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: #fff;
+    }
 
     .file-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
 
@@ -348,7 +355,7 @@
 
     <main>
       <div class="stage" id="stage">
-        <input class="file-input" id="file-input" type="file" accept="image/*" aria-label="Choose image" />
+        <input class="file-input" id="file-input" type="file" accept="image/*,.html,.htm,text/html" aria-label="Choose image or HTML file" />
         <div class="empty" id="empty">
           <div class="mark" aria-hidden="true">
             <svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2"/></svg>
@@ -363,6 +370,7 @@
         </div>
         <div class="preview hidden" id="preview">
           <img id="image" alt="Current workout infographic" />
+          <iframe class="hidden" id="html-preview" title="Current HTML file" sandbox="allow-scripts"></iframe>
         </div>
         <div class="busy hidden" id="busy"><span><i class="spin"></i>Saving to GitHub</span></div>
       </div>
@@ -418,6 +426,7 @@
       empty: document.getElementById("empty"),
       preview: document.getElementById("preview"),
       image: document.getElementById("image"),
+      htmlPreview: document.getElementById("html-preview"),
       file: document.getElementById("file-input"),
       busy: document.getElementById("busy"),
       pill: document.getElementById("status-pill"),
@@ -460,6 +469,7 @@
       if (mime === "image/png") return "png";
       if (mime === "image/webp") return "webp";
       if (mime === "image/gif") return "gif";
+      if (mime === "text/html") return "html";
       const m = String(name || "").match(/\.([a-z0-9]+)$/i);
       return (m && m[1].toLowerCase()) || "png";
     }
@@ -471,7 +481,14 @@
     function showImage(url, meta) {
       if (state.localUrl) URL.revokeObjectURL(state.localUrl);
       state.localUrl = url.startsWith("blob:") ? url : null;
-      els.image.src = url;
+      const isHtml = meta.mime === "text/html" || /\.html?$/i.test(meta.path || meta.name || "");
+      els.image.classList.toggle("hidden", isHtml);
+      els.htmlPreview.classList.toggle("hidden", !isHtml);
+      if (isHtml) {
+        els.htmlPreview.src = url;
+      } else {
+        els.image.src = url;
+      }
       els.empty.classList.add("hidden");
       els.preview.classList.remove("hidden");
       els.stage.classList.add("has-image");
@@ -486,6 +503,9 @@
       if (state.localUrl) URL.revokeObjectURL(state.localUrl);
       state.localUrl = null;
       els.image.removeAttribute("src");
+      els.htmlPreview.removeAttribute("src");
+      els.image.classList.remove("hidden");
+      els.htmlPreview.classList.add("hidden");
       els.empty.classList.remove("hidden");
       els.preview.classList.add("hidden");
       els.stage.classList.remove("has-image");
@@ -611,8 +631,9 @@
     }
 
     async function saveImage(file) {
-      if (!file || !file.type.startsWith("image/")) {
-        toast("That is not an image.");
+      const isHtml = file && (file.type === "text/html" || /\.html?$/i.test(file.name || ""));
+      if (!file || (!file.type.startsWith("image/") && !isHtml)) {
+        toast("Choose an image or HTML file.");
         return;
       }
       if (file.size > CONFIG.maxBytes) {
@@ -732,7 +753,7 @@
 
     function takeFile(list) {
       if (!list || !list.length) return null;
-      return [...list].find((f) => f.type.startsWith("image/")) || null;
+      return [...list].find((f) => f.type.startsWith("image/") || f.type === "text/html" || /\.html?$/i.test(f.name || "")) || null;
     }
 
     els.file.addEventListener("change", (e) => {

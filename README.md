@@ -8,10 +8,10 @@ Drop a workout infographic once. Open the same page on your phone. The image sta
 
 1. Open the live page on your computer.
 2. One-time setup: **Settings** → paste a GitHub token so uploads are saved in this repo (required for your phone to see the image).
-3. Drag and drop, tap to choose, or paste (`Ctrl/Cmd+V`) the infographic.
+3. Drag and drop, tap to choose, or paste (`Ctrl/Cmd+V`) the infographic or HTML file.
 4. On your phone, open the same URL (or add it to the home screen). The image is already there.
 
-Replace by dropping another image. Remove with the **Remove** button.
+Replace by dropping another image or HTML file. HTML files are displayed in a sandboxed preview. Remove with the **Remove** button.
 
 ## One-time token (uploads only)
 
