@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Board" />
+  <title>Workout Board</title>
+  <meta name="description" content="Drop a workout infographic. Open this page on your phone. One image, until you replace or remove it." />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --bg-elevated: #121214;
+      --bg-subtle: #1a1a1e;
+      --fg: #f4f4f5;
+      --fg-muted: #a1a1aa;
+      --fg-subtle: #71717a;
+      --border: color-mix(in oklab, var(--fg) 12%, transparent);
+      --border-strong: color-mix(in oklab, var(--fg) 22%, transparent);
+      --accent: #d6d3cd;
+      --accent-fg: #0a0a0b;
+      --danger: #c45c5c;
+      --ok: #7d9a7e;
+      --radius-xs: 4px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 48px;
+      --font: "Sora", system-ui, -apple-system, sans-serif;
+      --motion-quick: 150ms;
+      --motion-fast: 250ms;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --header-h: 64px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.5;
+      min-height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, [role="button"] { font-family: inherit; cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: 0.5; }
+    img { max-width: 100%; display: block; }
+
+    .app {
+      min-height: 100dvh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding:
+        calc(env(safe-area-inset-top) + var(--space-3))
+        max(var(--space-4), env(safe-area-inset-right))
+        calc(env(safe-area-inset-bottom) + var(--space-4))
+        max(var(--space-4), env(safe-area-inset-left));
+      gap: var(--space-4);
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+    .brand { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .brand h1 {
+      margin: 0;
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .brand p {
+      margin: 0;
+      font-size: 0.75rem;
+      color: var(--fg-subtle);
+      letter-spacing: 0.01em;
+    }
+    .header-actions { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--fg-muted);
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .pill .dot {
+      width: 6px; height: 6px; border-radius: 99px; background: var(--fg-subtle);
+    }
+    .pill.live .dot { background: var(--ok); }
+    .pill.warn .dot { background: #c4a35c; }
+
+    .icon-btn {
+      width: 44px; height: 44px;
+      display: grid; place-items: center;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--fg);
+    }
+    .icon-btn:hover { border-color: var(--border-strong); background: var(--bg-subtle); }
+    .icon-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+    main {
+      min-height: 0;
+      display: flex;
+    }
+
+    .stage {
+      flex: 1;
+      min-height: 52dvh;
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      border-radius: var(--radius-xl);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+    .stage.dragging {
+      border-color: var(--accent);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+    .stage.has-image { background: #070708; }
+
+    .empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-3);
+      padding: var(--space-6);
+      max-width: 28rem;
+    }
+    .mark {
+      width: 56px; height: 56px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      display: grid; place-items: center;
+      color: var(--accent);
+      margin-bottom: var(--space-2);
+    }
+    .mark svg { width: 24px; height: 24px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .empty h2 {
+      margin: 0;
+      font-size: 1.375rem;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .empty p { margin: 0; color: var(--fg-muted); font-size: 0.9375rem; }
+    .hints {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2);
+      margin-top: var(--space-2);
+    }
+    .hint {
+      font-size: 0.75rem;
+      color: var(--fg-subtle);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .preview {
+      width: 100%; height: 100%;
+      display: grid; place-items: center;
+      padding: var(--space-4);
+    }
+    .preview img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: var(--radius-sm);
+    }
+
+    .file-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+
+    .busy {
+      position: absolute; inset: 0;
+      background: color-mix(in oklab, var(--bg) 55%, transparent);
+      display: grid; place-items: center;
+      color: var(--fg);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      gap: var(--space-3);
+    }
+    .busy span { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .spin {
+      width: 22px; height: 22px;
+      border: 2px solid var(--border-strong);
+      border-top-color: var(--fg);
+      border-radius: 99px;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+    .meta { min-width: 0; }
+    .meta .name {
+      font-size: 0.875rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .meta .sub { font-size: 0.75rem; color: var(--fg-subtle); }
+    .actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+    .btn {
+      height: 44px;
+      padding: 0 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--fg);
+      font-size: 0.875rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn:hover { border-color: var(--border-strong); background: var(--bg-subtle); }
+    .btn.primary {
+      background: var(--accent);
+      color: var(--accent-fg);
+      border-color: transparent;
+    }
+    .btn.primary:hover { filter: brightness(1.06); background: var(--accent); }
+    .btn.danger { color: #f2d4d4; }
+    .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .btn:active { transform: scale(0.98); }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: calc(env(safe-area-inset-bottom) + 24px);
+      transform: translateX(-50%) translateY(8px);
+      background: var(--fg);
+      color: var(--accent-fg);
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--motion-fast) var(--ease), transform var(--motion-fast) var(--ease);
+      z-index: 50;
+      max-width: min(92vw, 360px);
+      text-align: center;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    dialog {
+      width: min(92vw, 440px);
+      border: 1px solid var(--border);
+      background: var(--bg-elevated);
+      color: var(--fg);
+      border-radius: calc(var(--radius-xl) + 8px);
+      padding: var(--space-5);
+      box-shadow: 0 24px 80px color-mix(in oklab, #000 55%, transparent);
+    }
+    dialog::backdrop { background: color-mix(in oklab, #000 62%, transparent); }
+    dialog[open] { animation: pop var(--motion-fast) var(--ease); }
+    @keyframes pop {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .sheet h2 { margin: 0 0 6px; font-size: 1.125rem; letter-spacing: -0.03em; }
+    .sheet .lead { margin: 0 0 var(--space-5); color: var(--fg-muted); font-size: 0.875rem; }
+    .sheet ol { margin: 0 0 var(--space-5); padding-left: 1.1rem; color: var(--fg-muted); font-size: 0.8125rem; }
+    .sheet ol a { color: var(--fg); }
+    label { display: block; font-size: 0.75rem; font-weight: 500; color: var(--fg-muted); margin-bottom: 6px; }
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--fg);
+      padding: 0 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8125rem;
+    }
+    input:focus { outline: 2px solid color-mix(in oklab, var(--accent) 55%, transparent); outline-offset: 1px; }
+    .sheet-actions { display: flex; gap: var(--space-2); margin-top: var(--space-5); justify-content: flex-end; }
+
+    .hidden { display: none !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <h1>Workout Board</h1>
+        <p>One infographic. Phone-ready.</p>
+      </div>
+      <div class="header-actions">
+        <span class="pill" id="status-pill"><span class="dot"></span><span id="status-text">Loading</span></span>
+        <button class="icon-btn" id="copy-btn" title="Copy page link" aria-label="Copy page link">
+          <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        </button>
+        <button class="icon-btn" id="settings-btn" title="Settings" aria-label="Settings">
+          <svg viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9c.3.7 1 1.2 1.8 1.2H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <div class="stage" id="stage">
+        <input class="file-input" id="file-input" type="file" accept="image/*" aria-label="Choose image" />
+        <div class="empty" id="empty">
+          <div class="mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M20 16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2"/></svg>
+          </div>
+          <h2>Drop your infographic</h2>
+          <p>It stays here until you replace or remove it. Open this same page on your phone to view it.</p>
+          <div class="hints">
+            <span class="hint">Drag & drop</span>
+            <span class="hint">Tap to choose</span>
+            <span class="hint">Paste</span>
+          </div>
+        </div>
+        <div class="preview hidden" id="preview">
+          <img id="image" alt="Current workout infographic" />
+        </div>
+        <div class="busy hidden" id="busy"><span><i class="spin"></i>Saving to GitHub</span></div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="meta">
+        <div class="name" id="meta-name">No image yet</div>
+        <div class="sub" id="meta-sub">Waiting for a drop</div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="replace-btn" type="button">Replace</button>
+        <button class="btn danger hidden" id="remove-btn" type="button">
+          <svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          Remove
+        </button>
+      </div>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <dialog id="settings" class="sheet">
+    <h2>GitHub save</h2>
+    <p class="lead">A token is only needed to upload or remove. Your phone can view the image without one. The token stays in this browser — it is never committed.</p>
+    <ol>
+      <li>Create a token with the <code>public_repo</code> scope: <a href="https://github.com/settings/tokens/new?description=workout-board&scopes=public_repo" target="_blank" rel="noopener">classic token</a>.</li>
+      <li>Or a fine-grained token limited to the <code>workout-board</code> repo, Contents: Read and write.</li>
+      <li>Paste it below. One time per browser.</li>
+    </ol>
+    <label for="token">Personal access token</label>
+    <input id="token" type="password" autocomplete="off" spellcheck="false" placeholder="ghp_… or github_pat_…" />
+    <div class="sheet-actions">
+      <button class="btn" id="clear-token" type="button">Clear</button>
+      <button class="btn primary" id="save-token" type="button">Save token</button>
+    </div>
+  </dialog>
+
+  <script>
+    const CONFIG = {
+      owner: "christianesl",
+      repo: "workout-board",
+      branch: "main",
+      metaPath: "latest.json",
+      maxBytes: 20 * 1024 * 1024,
+    };
+    const TOKEN_KEY = "workout-board.github-token";
+    const API = `https://api.github.com/repos/${CONFIG.owner}/${CONFIG.repo}/contents`;
+    const RAW = `https://raw.githubusercontent.com/${CONFIG.owner}/${CONFIG.repo}/${CONFIG.branch}`;
+
+    const els = {
+      stage: document.getElementById("stage"),
+      empty: document.getElementById("empty"),
+      preview: document.getElementById("preview"),
+      image: document.getElementById("image"),
+      file: document.getElementById("file-input"),
+      busy: document.getElementById("busy"),
+      pill: document.getElementById("status-pill"),
+      status: document.getElementById("status-text"),
+      name: document.getElementById("meta-name"),
+      sub: document.getElementById("meta-sub"),
+      remove: document.getElementById("remove-btn"),
+      replace: document.getElementById("replace-btn"),
+      toast: document.getElementById("toast"),
+      settings: document.getElementById("settings"),
+      token: document.getElementById("token"),
+    };
+
+    const state = {
+      meta: { empty: true },
+      localUrl: null,
+      busy: false,
+    };
+
+    function token() {
+      return localStorage.getItem(TOKEN_KEY) || "";
+    }
+
+    function setStatus(kind, text) {
+      els.pill.classList.remove("live", "warn");
+      if (kind) els.pill.classList.add(kind);
+      els.status.textContent = text;
+    }
+
+    let toastTimer;
+    function toast(msg) {
+      els.toast.textContent = msg;
+      els.toast.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => els.toast.classList.remove("show"), 2800);
+    }
+
+    function extFor(mime, name) {
+      if (mime === "image/jpeg") return "jpg";
+      if (mime === "image/png") return "png";
+      if (mime === "image/webp") return "webp";
+      if (mime === "image/gif") return "gif";
+      const m = String(name || "").match(/\.([a-z0-9]+)$/i);
+      return (m && m[1].toLowerCase()) || "png";
+    }
+
+    function imagePath(meta) {
+      return meta && meta.path ? meta.path : "media/current.png";
+    }
+
+    function showImage(url, meta) {
+      if (state.localUrl) URL.revokeObjectURL(state.localUrl);
+      state.localUrl = url.startsWith("blob:") ? url : null;
+      els.image.src = url;
+      els.empty.classList.add("hidden");
+      els.preview.classList.remove("hidden");
+      els.stage.classList.add("has-image");
+      els.remove.classList.remove("hidden");
+      els.file.classList.add("hidden");
+      const when = meta.updatedAt ? new Date(meta.updatedAt) : new Date();
+      els.name.textContent = meta.name || "Infographic";
+      els.sub.textContent = formatMeta(meta, when);
+    }
+
+    function showEmpty() {
+      if (state.localUrl) URL.revokeObjectURL(state.localUrl);
+      state.localUrl = null;
+      els.image.removeAttribute("src");
+      els.empty.classList.remove("hidden");
+      els.preview.classList.add("hidden");
+      els.stage.classList.remove("has-image");
+      els.remove.classList.add("hidden");
+      els.file.classList.remove("hidden");
+      els.name.textContent = "No image yet";
+      els.sub.textContent = token() ? "Ready to save to GitHub" : "Add a token in Settings to sync to your phone";
+    }
+
+    function formatMeta(meta, when) {
+      const size = meta.bytes ? formatBytes(meta.bytes) : "";
+      const time = when.toLocaleString(undefined, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+      return [size, time].filter(Boolean).join(" · ");
+    }
+
+    function formatBytes(n) {
+      if (n < 1024) return n + " B";
+      if (n < 1024 * 1024) return (n / 1024).toFixed(0) + " KB";
+      return (n / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    function setBusy(on, label) {
+      state.busy = on;
+      els.busy.classList.toggle("hidden", !on);
+      if (on && label) els.busy.querySelector("span").lastChild.textContent = label;
+    }
+
+    async function fileToBase64(file) {
+      const buf = await file.arrayBuffer();
+      const bytes = new Uint8Array(buf);
+      let binary = "";
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+      }
+      return btoa(binary);
+    }
+
+    async function ghGet(path) {
+      const headers = { Accept: "application/vnd.github+json" };
+      const t = token();
+      if (t) headers.Authorization = `Bearer ${t}`;
+      const res = await fetch(`${API}/${path}?ref=${CONFIG.branch}&_=${Date.now()}`, { headers });
+      if (res.status === 404) return null;
+      if (!res.ok) throw new Error(await errorMessage(res));
+      return res.json();
+    }
+
+    async function ghPut(path, content, message, sha) {
+      const t = token();
+      if (!t) throw new Error("Add a GitHub token in Settings to save.");
+      const body = { message, content, branch: CONFIG.branch };
+      if (sha) body.sha = sha;
+      const res = await fetch(`${API}/${path}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${t}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) throw new Error(await errorMessage(res));
+      return res.json();
+    }
+
+    async function ghDelete(path, sha, message) {
+      const t = token();
+      if (!t) throw new Error("Add a GitHub token in Settings to remove.");
+      const res = await fetch(`${API}/${path}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/vnd.github+json",
+          Authorization: `Bearer ${t}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message, sha, branch: CONFIG.branch }),
+      });
+      if (res.status === 404) return;
+      if (!res.ok) throw new Error(await errorMessage(res));
+    }
+
+    async function errorMessage(res) {
+      try {
+        const data = await res.json();
+        if (res.status === 401 || res.status === 403) {
+          return "GitHub rejected the token. Check Settings.";
+        }
+        return data.message || res.statusText;
+      } catch {
+        return res.statusText || "GitHub request failed";
+      }
+    }
+
+    function decodeMeta(file) {
+      if (!file || !file.content) return { empty: true };
+      try {
+        return JSON.parse(atob(file.content.replace(/\n/g, "")));
+      } catch {
+        return { empty: true };
+      }
+    }
+
+    async function loadFromGitHub() {
+      setStatus("", "Loading");
+      try {
+        const file = await ghGet(CONFIG.metaPath);
+        const meta = decodeMeta(file);
+        state.meta = meta;
+        if (meta && meta.empty === false && meta.path) {
+          const url = `${RAW}/${meta.path}?t=${encodeURIComponent(meta.updatedAt || Date.now())}`;
+          showImage(url, meta);
+          setStatus("live", "On GitHub");
+        } else {
+          showEmpty();
+          setStatus(token() ? "live" : "warn", token() ? "Ready" : "Local only");
+        }
+      } catch (err) {
+        showEmpty();
+        setStatus("warn", "Offline");
+        console.warn(err);
+      }
+    }
+
+    async function saveImage(file) {
+      if (!file || !file.type.startsWith("image/")) {
+        toast("That is not an image.");
+        return;
+      }
+      if (file.size > CONFIG.maxBytes) {
+        toast("Keep it under 20 MB.");
+        return;
+      }
+      const local = URL.createObjectURL(file);
+      const nextMeta = {
+        empty: false,
+        path: `media/current.${extFor(file.type, file.name)}`,
+        name: file.name || "infographic",
+        mime: file.type,
+        bytes: file.size,
+        updatedAt: new Date().toISOString(),
+      };
+      showImage(local, nextMeta);
+
+      if (!token()) {
+        setStatus("warn", "This device");
+        toast("Saved here only. Add a GitHub token in Settings so your phone can see it.");
+        persistLocal(file, nextMeta);
+        return;
+      }
+
+      setBusy(true, "Saving to GitHub");
+      try {
+        const b64 = await fileToBase64(file);
+        const existing = await ghGet(nextMeta.path);
+        await ghPut(nextMeta.path, b64, `Update infographic (${nextMeta.name})`, existing && existing.sha);
+        if (state.meta && state.meta.path && state.meta.path !== nextMeta.path) {
+          const old = await ghGet(state.meta.path);
+          if (old && old.sha) {
+            await ghDelete(state.meta.path, old.sha, `Remove previous infographic (${state.meta.path})`);
+          }
+        }
+        const metaFile = await ghGet(CONFIG.metaPath);
+        await ghPut(
+          CONFIG.metaPath,
+          btoa(unescape(encodeURIComponent(JSON.stringify(nextMeta, null, 2)))),
+          "Update latest.json",
+          metaFile && metaFile.sha
+        );
+        state.meta = nextMeta;
+        persistLocal(file, nextMeta);
+        setStatus("live", "On GitHub");
+        toast("Saved. Open this page on your phone.");
+      } catch (err) {
+        setStatus("warn", "Save failed");
+        toast(err.message || "Could not save to GitHub");
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    async function removeImage() {
+      if (!state.meta || state.meta.empty) {
+        showEmpty();
+        return;
+      }
+      if (!token()) {
+        toast("Add a GitHub token in Settings to remove the saved image.");
+        return;
+      }
+      if (!confirm("Remove the infographic from GitHub?")) return;
+      setBusy(true, "Removing");
+      try {
+        const path = imagePath(state.meta);
+        const existing = await ghGet(path);
+        if (existing && existing.sha) {
+          await ghDelete(path, existing.sha, "Remove infographic");
+        }
+        const empty = { empty: true, path: null, name: null, mime: null, bytes: 0, updatedAt: new Date().toISOString() };
+        const metaFile = await ghGet(CONFIG.metaPath);
+        await ghPut(
+          CONFIG.metaPath,
+          btoa(unescape(encodeURIComponent(JSON.stringify(empty, null, 2)))),
+          "Clear latest.json",
+          metaFile && metaFile.sha
+        );
+        state.meta = empty;
+        clearLocal();
+        showEmpty();
+        setStatus("live", "On GitHub");
+        toast("Removed.");
+      } catch (err) {
+        toast(err.message || "Could not remove");
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    const IDB_NAME = "workout-board";
+    function idb() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(IDB_NAME, 1);
+        req.onupgradeneeded = () => req.result.createObjectStore("kv");
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+    async function persistLocal(file, meta) {
+      try {
+        const db = await idb();
+        const tx = db.transaction("kv", "readwrite");
+        tx.objectStore("kv").put(file, "file");
+        tx.objectStore("kv").put(meta, "meta");
+      } catch {}
+    }
+    async function clearLocal() {
+      try {
+        const db = await idb();
+        const tx = db.transaction("kv", "readwrite");
+        tx.objectStore("kv").delete("file");
+        tx.objectStore("kv").delete("meta");
+      } catch {}
+    }
+
+    function takeFile(list) {
+      if (!list || !list.length) return null;
+      return [...list].find((f) => f.type.startsWith("image/")) || null;
+    }
+
+    els.file.addEventListener("change", (e) => {
+      const f = takeFile(e.target.files);
+      if (f) saveImage(f);
+      e.target.value = "";
+    });
+    els.replace.addEventListener("click", () => els.file.click());
+    els.remove.addEventListener("click", removeImage);
+
+    ["dragenter", "dragover"].forEach((type) => {
+      window.addEventListener(type, (e) => {
+        e.preventDefault();
+        els.stage.classList.add("dragging");
+      });
+    });
+    ["dragleave", "drop"].forEach((type) => {
+      window.addEventListener(type, (e) => {
+        e.preventDefault();
+        if (type === "dragleave" && e.target !== document.documentElement) return;
+        els.stage.classList.remove("dragging");
+      });
+    });
+    window.addEventListener("drop", (e) => {
+      e.preventDefault();
+      els.stage.classList.remove("dragging");
+      const f = takeFile(e.dataTransfer && e.dataTransfer.files);
+      if (f) saveImage(f);
+    });
+    window.addEventListener("paste", (e) => {
+      const items = e.clipboardData && e.clipboardData.files;
+      const f = takeFile(items);
+      if (f) {
+        e.preventDefault();
+        saveImage(f);
+      }
+    });
+
+    document.getElementById("copy-btn").addEventListener("click", async () => {
+      const url = "https://christianesl.github.io/workout-board/";
+      try {
+        await navigator.clipboard.writeText(url);
+        toast("Link copied. Open it on your phone.");
+      } catch {
+        toast(url);
+      }
+    });
+
+    document.getElementById("settings-btn").addEventListener("click", () => {
+      els.token.value = token();
+      els.settings.showModal();
+    });
+    document.getElementById("save-token").addEventListener("click", () => {
+      const value = els.token.value.trim();
+      if (!value) {
+        toast("Paste a token first.");
+        return;
+      }
+      localStorage.setItem(TOKEN_KEY, value);
+      els.settings.close();
+      setStatus("live", state.meta && state.meta.empty === false ? "On GitHub" : "Ready");
+      toast("Token saved on this device.");
+    });
+    document.getElementById("clear-token").addEventListener("click", () => {
+      localStorage.removeItem(TOKEN_KEY);
+      els.token.value = "";
+      setStatus("warn", "Local only");
+      toast("Token cleared.");
+    });
+    els.settings.addEventListener("click", (e) => {
+      if (e.target === els.settings) els.settings.close();
+    });
+
+    loadFromGitHub();
+  </script>
+</body>
+</html>
