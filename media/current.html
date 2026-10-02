@@ -1,205 +1,341 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía de Compra y Selección de CCTV</title>
-    <style>
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #0284c7;
-            --accent: #f59e0b;
-            --dark: #1e293b;
-            --light: #f8fafc;
-            --gray: #64748b;
-        }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: var(--light);
-            color: var(--dark);
-            padding: 40px 20px;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: #ffffff;
-            padding: 40px 30px;
-            text-align: center;
-        }
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
-        }
-        header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-        .content {
-            padding: 40px 30px;
-        }
-        .section-title {
-            font-size: 1.4rem;
-            color: var(--primary);
-            border-bottom: 3px solid var(--accent);
-            padding-bottom: 8px;
-            margin-bottom: 25px;
-            margin-top: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .section-title:first-of-type {
-            margin-top: 0;
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        @media (max-width: 768px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-        .card {
-            background: var(--light);
-            border-left: 5px solid var(--secondary);
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .card h3 {
-            font-size: 1.1rem;
-            color: var(--dark);
-            margin-bottom: 8px;
-        }
-        .card p {
-            font-size: 0.95rem;
-            color: var(--gray);
-            line-height: 1.5;
-        }
-        .checklist {
-            list-style: none;
-        }
-        .checklist li {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-            line-height: 1.5;
-        }
-        .checklist li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: var(--primary);
-            color: white;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        .highlight-box {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-        .highlight-box h4 {
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-        .highlight-box p {
-            font-size: 0.95rem;
-            color: var(--dark);
-            line-height: 1.5;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background: #f1f5f9;
-            color: var(--gray);
-            font-size: 0.85rem;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Friday · 5 km Easy Run</title>
+<style>
+  :root {
+    --bg: #0F1115;
+    --card: #1A1D23;
+    --card-2: #21252F;
+    --line: #2A2E38;
+    --accent: #FF8C00;
+    --text: #FFFFFF;
+    --muted: #9AA0B2;
+    --ink: #000000;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 40px;
+  }
+  .wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .hero { display: flex; flex-direction: column; gap: 10px; }
+  .kicker {
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  h1 {
+    font-size: 42px;
+    line-height: 0.92;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+  }
+  .sub {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .chip, .badge, .pill {
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 7px 12px;
+  }
+  .chip {
+    border: 1px solid var(--line);
+    color: var(--text);
+    background: var(--card);
+  }
+  .badge {
+    background: var(--accent);
+    color: var(--ink);
+    border: 1px solid var(--accent);
+  }
+  .section { display: flex; flex-direction: column; gap: 16px; }
+  h2 {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .timer {
+    background: var(--accent);
+    color: var(--ink);
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+  }
+  .timer .big {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .timer .small {
+    margin-top: 6px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: transform 0.15s ease;
+  }
+  .card:hover { transform: scale(1.02); }
+  .num {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--ink);
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-variant-numeric: tabular-nums;
+  }
+  .body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .title {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .meta {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .split {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .pill-row { display: flex; justify-content: center; }
+  .pill {
+    border: 1px solid var(--line);
+    color: var(--muted);
+    background: var(--card-2);
+  }
+  .note {
+    background: var(--card-2);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 14px 16px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .note strong { color: var(--text); }
+  .footer {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sum {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.03em;
+  }
+  .sum span { color: var(--accent); }
+  .bar {
+    display: grid;
+    grid-template-columns: 8fr 32fr 5fr;
+    height: 10px;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .bar i:nth-child(1) { background: #3A3F4B; }
+  .bar i:nth-child(2) { background: var(--accent); }
+  .bar i:nth-child(3) { background: #6B4A22; }
+  .legend {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>
 </head>
 <body>
+  <main class="wrap">
+    <header class="hero">
+      <div class="kicker">Week schedule · Friday</div>
+      <h1>Friday<br/>5 km run</h1>
+      <p class="sub">Endurance · pace · cardio</p>
+      <div class="chips">
+        <span class="chip">45 min</span>
+        <span class="chip">Outdoor</span>
+        <span class="chip">Easy 5 km</span>
+        <span class="badge">Shoulder protected</span>
+      </div>
+    </header>
 
-    <div class="container">
-        <header>
-            <h1>Guía Esencial de CCTV</h1>
-            <p>Características mínimas y puntos clave para elegir tu sistema de seguridad</p>
-        </header>
+    <section class="section">
+      <h2>Session rule</h2>
+      <div class="timer">
+        <div class="big">Easy pace · talk test · no sprint</div>
+        <div class="small">5 km continuous · about 6:24 / km · 32 min</div>
+      </div>
+      <div class="note">
+        <strong>Today’s target is consistency, not speed.</strong>
+        Stay at a comfortable pace you could hold a short sentence through. If breathing gets choppy, slow down. Arms stay low and relaxed. No overhead reach, no aggressive arm drive, shoulder blades packed and stable.
+      </div>
+    </section>
 
-        <div class="content">
-            
-            <!-- Especificaciones Técnicas -->
-            <div class="section-title">📊 Especificaciones Técnicas Mínimas</div>
-            
-            <div class="grid-2">
-                <div class="card">
-                    <h3>Resolución Óptima</h3>
-                    <p><strong>Mínimo 5 MP</strong> (o superior). Garantiza la nitidez adecuada al hacer zoom digital sobre rostros o placas a distancia.</p>
-                </div>
-                <div class="card">
-                    <h3>Tecnología de Red</h3>
-                    <p><strong>IP con PoE</strong> (Power over Ethernet) preferentemente, facilitando datos y energía limpia mediante un solo cable UTP.</p>
-                </div>
-                <div class="card">
-                    <h3>Compresión de Video</h3>
-                    <p>Códec <strong>H.265 o H.265+</strong>. Vital para optimizar el espacio en disco duro con flujos de alta definición de 5 MP.</p>
-                </div>
-                <div class="card">
-                    <h3>Almacenamiento</h3>
-                    <p><strong>1 TB a 2 TB</strong> de disco duro dedicado para videovigilancia (ej. líneas especializadas 24/7), no discos de PC comunes.</p>
-                </div>
-            </div>
-
-            <div class="card" style="margin-top: 15px; border-left-color: var(--accent);">
-                <h3>Resistencia Ambiental y Visión Nocturna</h3>
-                <p>Certificación de intemperie <strong>IP66 o IP67</strong> (indispensable para soportar lluvia y alta humedad salina) con visión nocturna por infrarrojos y opción a color.</p>
-            </div>
-
-            <!-- Preguntas Clave -->
-            <div class="section-title">🔍 Puntos Clave para las Juntas con Proveedores</div>
-            
-            <ul class="checklist">
-                <li><strong>Acceso remoto móvil:</strong> Confirma que la aplicación móvil de visualización (como Hik-Connect o similar) sea estable y esté libre de cobros de mensualidades ocultas fuera de casa.</li>
-                <li><strong>Protección eléctrica:</strong> Asegura la inclusión o cotización de un <strong>No-Breaks (UPS)</strong> para proteger el grabador y el módem ante variaciones de voltaje y apagones frecuentes.</li>
-                <li><strong>Estética y canalización:</strong> Solicita una explicación clara de la ruta del cableado (especialmente entre la planta baja y alta), exigiendo tubería conduit exterior para proteger los cables del sol y la intemperie.</li>
-                <li><strong>Garantía por escrito:</strong> Exige un mínimo de 1 año de garantía directa tanto en equipos como en la mano de obra de instalación, aclarando si el soporte técnico es a domicilio.</li>
-                <li><strong>Presupuesto transparente:</strong> Verifica que el costo desglose con precisión cámaras, grabador, disco duro, metros de cable, conectores, tubería y mano de obra para evitar cargos sorpresas por extras.</li>
-            </ul>
-
-            <div class="highlight-box">
-                <h4>Recomendación Estratégica</h4>
-                <p>Para una residencia de dos niveles, un sistema de <strong>8 canales NVR</strong> con 6 cámaras estratégicamente distribuidas (perímetro exterior y accesos principales) te ofrecerá máxima seguridad actual y la flexibilidad de expandir el sistema en el futuro.</p>
-            </div>
-
+    <section class="section">
+      <h2>Warm-up · 8 min</h2>
+      <article class="card">
+        <div class="num">1</div>
+        <div class="body">
+          <div class="title">Easy walk</div>
+          <div class="meta">2 min · nose or easy mouth breathing · upright posture</div>
         </div>
+      </article>
+      <article class="card">
+        <div class="num">2</div>
+        <div class="body">
+          <div class="title">Small arm circles / march</div>
+          <div class="meta">1 min · circles stay below shoulder height · blades packed</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="num">3</div>
+        <div class="body">
+          <div class="title">Leg swings</div>
+          <div class="meta">1 min · front-to-back, then side-to-side · hold a wall, not the shoulder</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="num">4</div>
+        <div class="body">
+          <div class="title">Walking lunges</div>
+          <div class="meta">1 min · short steps · hands on hips, no load</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="num">5</div>
+        <div class="body">
+          <div class="title">Easy jog build</div>
+          <div class="meta">3 min · walk to jog, then settle into today’s pace</div>
+        </div>
+      </article>
+    </section>
 
-        <footer>
-            Infografía técnica de apoyo para selección de sistemas de videovigilancia.
-        </footer>
-    </div>
+    <section class="section">
+      <h2>Main run · 32 min</h2>
+      <article class="card">
+        <div class="num">1</div>
+        <div class="body">
+          <div class="title">Km 1 · settle</div>
+          <div class="meta">~6:30–7:00 / km · slower than you think</div>
+          <div class="split">Find cadence. Quiet feet. Shoulders down. If the first minute feels hard, you started too fast.</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="num">2</div>
+        <div class="body">
+          <div class="title">Km 2–4 · lock pace</div>
+          <div class="meta">~6:20–6:30 / km · same effort the whole way</div>
+          <div class="split">One gear only. Match each kilometer. Breathing stays conversational. No surges on hills — shorten the stride.</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="num">3</div>
+        <div class="body">
+          <div class="title">Km 5 · finish smooth</div>
+          <div class="meta">Hold the same pace · no kick</div>
+          <div class="split">Last 200 m stays controlled. Stop the watch when you hit 5.00 km, then walk.</div>
+        </div>
+      </article>
+      <div class="pill-row"><span class="pill">Walk 20–30 s only if needed · then resume easy</span></div>
+    </section>
 
+    <section class="section">
+      <h2>Cool-down · 5 min</h2>
+      <article class="card">
+        <div class="num">1</div>
+        <div class="body">
+          <div class="title">Walk it down</div>
+          <div class="meta">2 min · hands relaxed at your sides</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="num">2</div>
+        <div class="body">
+          <div class="title">Calf + quad</div>
+          <div class="meta">1 min · wall calf stretch, then standing quad · 20 s each side</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="num">3</div>
+        <div class="body">
+          <div class="title">Hip flexor + hamstring</div>
+          <div class="meta">1 min · half-kneel hip flexor, then hinge hamstring · no arm reach overhead</div>
+        </div>
+      </article>
+      <article class="card">
+        <div class="num">4</div>
+        <div class="body">
+          <div class="title">Shoulder reset</div>
+          <div class="meta">1 min · scapular squeezes and slow shoulder rolls, range only where it is pain-free</div>
+        </div>
+      </article>
+    </section>
+
+    <footer class="footer">
+      <div class="sum">8 + 32 + 5 = <span>45 min</span></div>
+      <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="legend">
+        <span>Warm-up 8</span>
+        <span>5 km 32</span>
+        <span>Cool-down 5</span>
+      </div>
+      <div class="note">No dumbbells, kettlebell, or rope today. Bodyweight only. Skip any stretch that loads the shoulder. If pace slips past 7:15 / km and still feels hard, finish the time easy and stop at whatever distance you reach.</div>
+    </footer>
+  </main>
 </body>
 </html>
