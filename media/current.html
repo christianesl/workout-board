@@ -1,341 +1,418 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Friday · 5 km Easy Run</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wednesday: Active Recovery & Mobility</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0F1115;
-    --card: #1A1D23;
-    --card-2: #21252F;
-    --line: #2A2E38;
-    --accent: #FF8C00;
-    --text: #FFFFFF;
-    --muted: #9AA0B2;
-    --ink: #000000;
+    --bg-page: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --card-border: #E2E8F0;
+    --primary: #2563EB; /* Clean Athletic Royal Blue */
+    --primary-soft: #EFF6FF;
+    --primary-border: #BFDBFE;
+    --text-dark: #0F172A;
+    --text-muted: #64748B;
+    --alert-bg: #FEF2F2;
+    --alert-border: #FECACA;
+    --alert-text: #DC2626;
+    --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+    --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: Inter, "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    min-height: 100vh;
-    padding: 24px 16px 40px;
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-dark);
+    padding: 24px 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
-  .wrap {
-    max-width: 480px;
+
+  .app-container {
+    max-width: 520px;
     margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
   }
-  .hero { display: flex; flex-direction: column; gap: 10px; }
-  .kicker {
-    color: var(--accent);
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+
+  /* HEADER CARD */
+  .header-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
   }
-  h1 {
-    font-size: 42px;
-    line-height: 0.92;
-    font-weight: 900;
-    letter-spacing: -0.04em;
-    text-transform: uppercase;
+
+  .header-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #2563EB 0%, #38BDF8 100%);
   }
-  .sub {
-    color: var(--muted);
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-  .chip, .badge, .pill {
-    border-radius: 999px;
+
+  .day-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-soft);
+    color: var(--primary);
     font-size: 11px;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    border-radius: 100px;
+    letter-spacing: 1px;
     text-transform: uppercase;
-    padding: 7px 12px;
+    margin-bottom: 14px;
+    border: 1px solid var(--primary-border);
   }
-  .chip {
-    border: 1px solid var(--line);
-    color: var(--text);
-    background: var(--card);
-  }
-  .badge {
-    background: var(--accent);
-    color: var(--ink);
-    border: 1px solid var(--accent);
-  }
-  .section { display: flex; flex-direction: column; gap: 16px; }
-  h2 {
-    font-size: 18px;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .timer {
-    background: var(--accent);
-    color: var(--ink);
-    border-radius: 16px;
-    padding: 16px;
-    text-align: center;
-    font-weight: 900;
-    letter-spacing: -0.02em;
-  }
-  .timer .big {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-variant-numeric: tabular-nums;
-    font-size: 22px;
-    line-height: 1.2;
-  }
-  .timer .small {
-    margin-top: 6px;
-    font-size: 12px;
+
+  .title {
+    font-size: 26px;
     font-weight: 800;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    color: var(--text-dark);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
   }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 16px;
-    display: flex;
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* DASHBOARD GRID */
+  .dash-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
-    align-items: flex-start;
-    transition: transform 0.15s ease;
+    margin-top: 24px;
   }
-  .card:hover { transform: scale(1.02); }
-  .num {
+
+  .dash-box {
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 14px 10px;
+  }
+
+  .dash-val {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.5px;
+  }
+
+  .dash-lbl {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* SHOULDER ALERT */
+  .shoulder-alert {
+    background: var(--alert-bg);
+    border: 1px solid var(--alert-border);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .alert-icon {
+    background: #FEE2E2;
+    color: var(--alert-text);
     width: 32px;
     height: 32px;
-    min-width: 32px;
-    border-radius: 999px;
-    background: var(--accent);
-    color: var(--ink);
-    font-weight: 900;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-variant-numeric: tabular-nums;
-  }
-  .body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-  .title {
-    font-size: 14px;
     font-weight: 800;
-    letter-spacing: 0.02em;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .alert-content h4 {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--alert-text);
     text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
   }
-  .meta {
-    color: var(--muted);
+
+  .alert-content p {
     font-size: 13px;
-    line-height: 1.4;
-  }
-  .split {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid rgba(255,255,255,0.2);
-    color: var(--text);
-    font-size: 13px;
-    line-height: 1.4;
-  }
-  .pill-row { display: flex; justify-content: center; }
-  .pill {
-    border: 1px solid var(--line);
-    color: var(--muted);
-    background: var(--card-2);
-  }
-  .note {
-    background: var(--card-2);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 14px 16px;
-    color: var(--muted);
-    font-size: 13px;
+    color: #991B1B;
     line-height: 1.45;
+    font-weight: 500;
   }
-  .note strong { color: var(--text); }
-  .footer {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+
+  /* SECTION BLOCK */
+  .section-block {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-subtle);
   }
-  .sum {
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    font-variant-numeric: tabular-nums;
-    font-weight: 900;
-    font-size: 18px;
-    letter-spacing: -0.03em;
-  }
-  .sum span { color: var(--accent); }
-  .bar {
-    display: grid;
-    grid-template-columns: 8fr 32fr 5fr;
-    height: 10px;
-    border-radius: 999px;
-    overflow: hidden;
-    border: 1px solid var(--line);
-  }
-  .bar i:nth-child(1) { background: #3A3F4B; }
-  .bar i:nth-child(2) { background: var(--accent); }
-  .bar i:nth-child(3) { background: #6B4A22; }
-  .legend {
+
+  .section-header {
     display: flex;
     justify-content: space-between;
-    color: var(--muted);
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.3px;
+  }
+
+  .section-time {
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--primary-soft);
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+
+  /* EXERCISE CARDS */
+  .ex-card {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+
+  .ex-card:last-child { margin-bottom: 0; }
+
+  .ex-card:hover {
+    border-color: var(--primary-border);
+    transform: translateY(-1px);
+  }
+
+  .ex-info { flex: 1; }
+
+  .ex-name {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 3px;
+  }
+
+  .ex-cue {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .ex-dur {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    color: var(--text-dark);
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
   }
+
+  /* VALIDATION CARD */
+  .calc-card {
+    background: #0F172A;
+    color: #FFFFFF;
+    border-radius: 20px;
+    padding: 24px;
+    margin-top: 24px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .calc-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #38BDF8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #94A3B8;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .calc-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 800;
+    color: #FFFFFF;
+    padding-top: 14px;
+    margin-top: 2px;
+  }
+
 </style>
 </head>
 <body>
-  <main class="wrap">
-    <header class="hero">
-      <div class="kicker">Week schedule · Friday</div>
-      <h1>Friday<br/>5 km run</h1>
-      <p class="sub">Endurance · pace · cardio</p>
-      <div class="chips">
-        <span class="chip">45 min</span>
-        <span class="chip">Outdoor</span>
-        <span class="chip">Easy 5 km</span>
-        <span class="badge">Shoulder protected</span>
+
+<div class="app-container">
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="day-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      Wednesday • Active Recovery
+    </div>
+    <div class="title">Mobility & Stretch Routine</div>
+    <div class="subtitle">Focus on joint health, hip opening & spine decompression</div>
+    
+    <div class="dash-row">
+      <div class="dash-box">
+        <div class="dash-val">45.0</div>
+        <div class="dash-lbl">Total Mins</div>
       </div>
-    </header>
-
-    <section class="section">
-      <h2>Session rule</h2>
-      <div class="timer">
-        <div class="big">Easy pace · talk test · no sprint</div>
-        <div class="small">5 km continuous · about 6:24 / km · 32 min</div>
+      <div class="dash-box">
+        <div class="dash-val">Low</div>
+        <div class="dash-lbl">Intensity</div>
       </div>
-      <div class="note">
-        <strong>Today’s target is consistency, not speed.</strong>
-        Stay at a comfortable pace you could hold a short sentence through. If breathing gets choppy, slow down. Arms stay low and relaxed. No overhead reach, no aggressive arm drive, shoulder blades packed and stable.
+      <div class="dash-box">
+        <div class="dash-val">0 lb</div>
+        <div class="dash-lbl">Load</div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <section class="section">
-      <h2>Warm-up · 8 min</h2>
-      <article class="card">
-        <div class="num">1</div>
-        <div class="body">
-          <div class="title">Easy walk</div>
-          <div class="meta">2 min · nose or easy mouth breathing · upright posture</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">2</div>
-        <div class="body">
-          <div class="title">Small arm circles / march</div>
-          <div class="meta">1 min · circles stay below shoulder height · blades packed</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">3</div>
-        <div class="body">
-          <div class="title">Leg swings</div>
-          <div class="meta">1 min · front-to-back, then side-to-side · hold a wall, not the shoulder</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">4</div>
-        <div class="body">
-          <div class="title">Walking lunges</div>
-          <div class="meta">1 min · short steps · hands on hips, no load</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">5</div>
-        <div class="body">
-          <div class="title">Easy jog build</div>
-          <div class="meta">3 min · walk to jog, then settle into today’s pace</div>
-        </div>
-      </article>
-    </section>
+  <!-- SHOULDER ALERT -->
+  <div class="shoulder-alert">
+    <div class="alert-icon">!</div>
+    <div class="alert-content">
+      <h4>Shoulder Safety Protocol Active</h4>
+      <p>All arm movements remain below shoulder level. Zero overhead reach or loaded rotations. Keep scapulae fully retracted and supported.</p>
+    </div>
+  </div>
 
-    <section class="section">
-      <h2>Main run · 32 min</h2>
-      <article class="card">
-        <div class="num">1</div>
-        <div class="body">
-          <div class="title">Km 1 · settle</div>
-          <div class="meta">~6:30–7:00 / km · slower than you think</div>
-          <div class="split">Find cadence. Quiet feet. Shoulders down. If the first minute feels hard, you started too fast.</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">2</div>
-        <div class="body">
-          <div class="title">Km 2–4 · lock pace</div>
-          <div class="meta">~6:20–6:30 / km · same effort the whole way</div>
-          <div class="split">One gear only. Match each kilometer. Breathing stays conversational. No surges on hills — shorten the stride.</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">3</div>
-        <div class="body">
-          <div class="title">Km 5 · finish smooth</div>
-          <div class="meta">Hold the same pace · no kick</div>
-          <div class="split">Last 200 m stays controlled. Stop the watch when you hit 5.00 km, then walk.</div>
-        </div>
-      </article>
-      <div class="pill-row"><span class="pill">Walk 20–30 s only if needed · then resume easy</span></div>
-    </section>
-
-    <section class="section">
-      <h2>Cool-down · 5 min</h2>
-      <article class="card">
-        <div class="num">1</div>
-        <div class="body">
-          <div class="title">Walk it down</div>
-          <div class="meta">2 min · hands relaxed at your sides</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">2</div>
-        <div class="body">
-          <div class="title">Calf + quad</div>
-          <div class="meta">1 min · wall calf stretch, then standing quad · 20 s each side</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">3</div>
-        <div class="body">
-          <div class="title">Hip flexor + hamstring</div>
-          <div class="meta">1 min · half-kneel hip flexor, then hinge hamstring · no arm reach overhead</div>
-        </div>
-      </article>
-      <article class="card">
-        <div class="num">4</div>
-        <div class="body">
-          <div class="title">Shoulder reset</div>
-          <div class="meta">1 min · scapular squeezes and slow shoulder rolls, range only where it is pain-free</div>
-        </div>
-      </article>
-    </section>
-
-    <footer class="footer">
-      <div class="sum">8 + 32 + 5 = <span>45 min</span></div>
-      <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
-      <div class="legend">
-        <span>Warm-up 8</span>
-        <span>5 km 32</span>
-        <span>Cool-down 5</span>
+  <!-- BLOCK 1: OUTDOOR / TREADMILL WALK -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-title">1. Active Recovery Walk</div>
+      <div class="section-time">20 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Brisk Aerobic Walk</div>
+        <div class="ex-cue">Maintain a light, steady pace. Keep arm swing relaxed and natural below chest height.</div>
       </div>
-      <div class="note">No dumbbells, kettlebell, or rope today. Bodyweight only. Skip any stretch that loads the shoulder. If pace slips past 7:15 / km and still feels hard, finish the time easy and stop at whatever distance you reach.</div>
-    </footer>
-  </main>
-</body>
-</html>
+      <div class="ex-dur">20 Mins</div>
+    </div>
+  </div>
+
+  <!-- BLOCK 2: LOWER BODY & HIPS MOBILITY -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-title">2. Hips & Lower Body Mobility</div>
+      <div class="section-time">12 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">90/90 Hip Switches</div>
+        <div class="ex-cue">Smooth internal & external rotations to mobilize hip joints.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Kneeling Hip Flexor Stretch</div>
+        <div class="ex-cue">Tuck pelvis, engage glute, keep chest upright with hands on hips.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">World's Greatest Stretch (Modified)</div>
+        <div class="ex-cue">Deep forward lunge; keep hands inside front ankle without overhead reach.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Standing Calf & Hamstring Scoops</div>
+        <div class="ex-cue">Hinge gently at the hips, reaching toward mid-shin level.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+  </div>
+
+  <!-- BLOCK 3: SPINE & DECOMPRESSION -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-title">3. Spine & Thoracic Decompression</div>
+      <div class="section-time">13 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Quadruped Cat-Cow</div>
+        <div class="ex-cue">Articulate spine slowly. Focus movement on mid-back flexion.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Side-Lying Thoracic Book Openers</div>
+        <div class="ex-cue">Rotate top ribcage open, capping movement at chest level.</div>
+      </div>
+      <div class="ex-dur">4 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Supine Glute & Figure-4 Stretch</div>
+        <div class="ex-cue">Cross ankle over opposite knee, pull gently to release lower back.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Diaphragmatic Box Breathing</div>
+        <div class="ex-cue">Inhale 4s, Hold 4s, Exhale 4s, Hold 4s for full recovery reset.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+  </div>
+
+  <!-- DURATION VALIDATION -->
+  <div class="calc-card">
+    <div class="calc-title">Duration
