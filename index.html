@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0a0b" />
+  <meta name="theme-color" content="#F8FAFC" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Board" />
   <title>Workout Board</title>
   <meta name="description" content="Drop a workout infographic. Open this page on your phone. One image, until you replace or remove it." />
@@ -16,18 +16,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0a0a0b;
-      --bg-elevated: #121214;
-      --bg-subtle: #1a1a1e;
-      --fg: #f4f4f5;
-      --fg-muted: #a1a1aa;
-      --fg-subtle: #71717a;
+      --bg: #F8FAFC;
+      --bg-elevated: #FFFFFF;
+      --bg-subtle: #F1F5F9;
+      --fg: #0F172A;
+      --fg-muted: #64748B;
+      --fg-subtle: #94A3B8;
       --border: color-mix(in oklab, var(--fg) 12%, transparent);
       --border-strong: color-mix(in oklab, var(--fg) 22%, transparent);
-      --accent: #d6d3cd;
-      --accent-fg: #0a0a0b;
-      --danger: #c45c5c;
-      --ok: #7d9a7e;
+      --accent: #2563EB;
+      --accent-fg: #FFFFFF;
+      --danger: #DC2626;
+      --ok: #16A34A;
       --radius-xs: 4px;
       --radius-sm: 8px;
       --radius-md: 12px;
@@ -147,7 +147,7 @@
       border-color: var(--accent);
       box-shadow: inset 0 0 0 1px var(--accent);
     }
-    .stage.has-image { background: #070708; }
+    .stage.has-image { background: #F1F5F9; }
 
     .empty {
       display: flex;
@@ -212,7 +212,7 @@
 
     .busy {
       position: absolute; inset: 0;
-      background: color-mix(in oklab, var(--bg) 55%, transparent);
+      background: color-mix(in oklab, #FFFFFF 78%, transparent);
       display: grid; place-items: center;
       color: var(--fg);
       font-size: 0.8125rem;
@@ -267,7 +267,7 @@
       border-color: transparent;
     }
     .btn.primary:hover { filter: brightness(1.06); background: var(--accent); }
-    .btn.danger { color: #f2d4d4; }
+    .btn.danger { color: var(--danger); }
     .btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
     .btn:active { transform: scale(0.98); }
 
@@ -298,9 +298,9 @@
       color: var(--fg);
       border-radius: calc(var(--radius-xl) + 8px);
       padding: var(--space-5);
-      box-shadow: 0 24px 80px color-mix(in oklab, #000 55%, transparent);
+      box-shadow: 0 24px 80px color-mix(in oklab, #0F172A 18%, transparent);
     }
-    dialog::backdrop { background: color-mix(in oklab, #000 62%, transparent); }
+    dialog::backdrop { background: color-mix(in oklab, #0F172A 28%, transparent); }
     dialog[open] { animation: pop var(--motion-fast) var(--ease); }
     @keyframes pop {
       from { opacity: 0; transform: scale(0.96); }
