@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wednesday: Active Recovery & Mobility</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #F8FAFC;
+    --card-bg: #FFFFFF;
+    --card-border: #E2E8F0;
+    --primary: #2563EB; /* Clean Athletic Royal Blue */
+    --primary-soft: #EFF6FF;
+    --primary-border: #BFDBFE;
+    --text-dark: #0F172A;
+    --text-muted: #64748B;
+    --alert-bg: #FEF2F2;
+    --alert-border: #FECACA;
+    --alert-text: #DC2626;
+    --shadow-subtle: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+    --shadow-card: 0 10px 25px -5px rgba(15, 23, 42, 0.04), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-dark);
+    padding: 24px 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .app-container {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* HEADER CARD */
+  .header-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #2563EB 0%, #38BDF8 100%);
+  }
+
+  .day-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--primary-soft);
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 100px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    border: 1px solid var(--primary-border);
+  }
+
+  .title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* DASHBOARD GRID */
+  .dash-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .dash-box {
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 14px 10px;
+  }
+
+  .dash-val {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.5px;
+  }
+
+  .dash-lbl {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* SHOULDER ALERT */
+  .shoulder-alert {
+    background: var(--alert-bg);
+    border: 1px solid var(--alert-border);
+    border-radius: 18px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .alert-icon {
+    background: #FEE2E2;
+    color: var(--alert-text);
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .alert-content h4 {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--alert-text);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+  }
+
+  .alert-content p {
+    font-size: 13px;
+    color: #991B1B;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  /* SECTION BLOCK */
+  .section-block {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 20px;
+    padding: 22px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-subtle);
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .section-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.3px;
+  }
+
+  .section-time {
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--primary-soft);
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+
+  /* EXERCISE CARDS */
+  .ex-card {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+
+  .ex-card:last-child { margin-bottom: 0; }
+
+  .ex-card:hover {
+    border-color: var(--primary-border);
+    transform: translateY(-1px);
+  }
+
+  .ex-info { flex: 1; }
+
+  .ex-name {
+    font-size: 14.5px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 3px;
+  }
+
+  .ex-cue {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+
+  .ex-dur {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    color: var(--text-dark);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  }
+
+  /* VALIDATION CARD */
+  .calc-card {
+    background: #0F172A;
+    color: #FFFFFF;
+    border-radius: 20px;
+    padding: 24px;
+    margin-top: 24px;
+    box-shadow: var(--shadow-card);
+  }
+
+  .calc-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #38BDF8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+
+  .calc-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #94A3B8;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .calc-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-weight: 800;
+    color: #FFFFFF;
+    padding-top: 14px;
+    margin-top: 2px;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- HEADER -->
+  <div class="header-card">
+    <div class="day-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+      Wednesday • Active Recovery
+    </div>
+    <div class="title">Mobility & Stretch Routine</div>
+    <div class="subtitle">Focus on joint health, hip opening & spine decompression</div>
+    
+    <div class="dash-row">
+      <div class="dash-box">
+        <div class="dash-val">45.0</div>
+        <div class="dash-lbl">Total Mins</div>
+      </div>
+      <div class="dash-box">
+        <div class="dash-val">Low</div>
+        <div class="dash-lbl">Intensity</div>
+      </div>
+      <div class="dash-box">
+        <div class="dash-val">0 lb</div>
+        <div class="dash-lbl">Load</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHOULDER ALERT -->
+  <div class="shoulder-alert">
+    <div class="alert-icon">!</div>
+    <div class="alert-content">
+      <h4>Shoulder Safety Protocol Active</h4>
+      <p>All arm movements remain below shoulder level. Zero overhead reach or loaded rotations. Keep scapulae fully retracted and supported.</p>
+    </div>
+  </div>
+
+  <!-- BLOCK 1: OUTDOOR / TREADMILL WALK -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-title">1. Active Recovery Walk</div>
+      <div class="section-time">20 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Brisk Aerobic Walk</div>
+        <div class="ex-cue">Maintain a light, steady pace. Keep arm swing relaxed and natural below chest height.</div>
+      </div>
+      <div class="ex-dur">20 Mins</div>
+    </div>
+  </div>
+
+  <!-- BLOCK 2: LOWER BODY & HIPS MOBILITY -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-title">2. Hips & Lower Body Mobility</div>
+      <div class="section-time">12 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">90/90 Hip Switches</div>
+        <div class="ex-cue">Smooth internal & external rotations to mobilize hip joints.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Kneeling Hip Flexor Stretch</div>
+        <div class="ex-cue">Tuck pelvis, engage glute, keep chest upright with hands on hips.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">World's Greatest Stretch (Modified)</div>
+        <div class="ex-cue">Deep forward lunge; keep hands inside front ankle without overhead reach.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Standing Calf & Hamstring Scoops</div>
+        <div class="ex-cue">Hinge gently at the hips, reaching toward mid-shin level.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+  </div>
+
+  <!-- BLOCK 3: SPINE & DECOMPRESSION -->
+  <div class="section-block">
+    <div class="section-header">
+      <div class="section-title">3. Spine & Thoracic Decompression</div>
+      <div class="section-time">13 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Quadruped Cat-Cow</div>
+        <div class="ex-cue">Articulate spine slowly. Focus movement on mid-back flexion.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Side-Lying Thoracic Book Openers</div>
+        <div class="ex-cue">Rotate top ribcage open, capping movement at chest level.</div>
+      </div>
+      <div class="ex-dur">4 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Supine Glute & Figure-4 Stretch</div>
+        <div class="ex-cue">Cross ankle over opposite knee, pull gently to release lower back.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+    <div class="ex-card">
+      <div class="ex-info">
+        <div class="ex-name">Diaphragmatic Box Breathing</div>
+        <div class="ex-cue">Inhale 4s, Hold 4s, Exhale 4s, Hold 4s for full recovery reset.</div>
+      </div>
+      <div class="ex-dur">3 Mins</div>
+    </div>
+  </div>
+
+  <!-- DURATION VALIDATION -->
+  <div class="calc-card">
+    <div class="calc-title">Duration
