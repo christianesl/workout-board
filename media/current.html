@@ -250,8 +250,9 @@
 
   /* VALIDATION CARD */
   .calc-card {
-    background: #0F172A;
-    color: #FFFFFF;
+    background: var(--card-bg);
+    color: var(--text-dark);
+    border: 1px solid var(--card-border);
     border-radius: 20px;
     padding: 24px;
     margin-top: 24px;
@@ -261,7 +262,7 @@
   .calc-title {
     font-size: 13px;
     font-weight: 800;
-    color: #38BDF8;
+    color: var(--primary);
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 14px;
@@ -271,9 +272,9 @@
     display: flex;
     justify-content: space-between;
     font-size: 13px;
-    color: #94A3B8;
+    color: var(--text-muted);
     padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--card-border);
   }
 
   .calc-total {
@@ -281,7 +282,7 @@
     justify-content: space-between;
     font-size: 15px;
     font-weight: 800;
-    color: #FFFFFF;
+    color: var(--text-dark);
     padding-top: 14px;
     margin-top: 2px;
   }
